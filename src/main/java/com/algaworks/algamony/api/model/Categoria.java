@@ -1,6 +1,8 @@
 package com.algaworks.algamony.api.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +20,8 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
 
+    @NotBlank(message = "O [nome] é obrigatório")
+    @Size(min = 3, max = 20, message = "O [nome] deve ter entre 3 e 20 caracteres")
     private String nome;
 
     @Override
