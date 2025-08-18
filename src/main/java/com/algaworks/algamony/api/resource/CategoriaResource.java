@@ -1,9 +1,12 @@
 package com.algaworks.algamony.api.resource;
 
+import com.algaworks.algamony.api.event.RecursoCriadoEvent;
 import com.algaworks.algamony.api.model.Categoria;
 import com.algaworks.algamony.api.repository.CategoriaRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -16,9 +19,11 @@ import java.util.List;
 public class CategoriaResource {
 
     private final CategoriaRepository categoriaRepository;
+    private final ApplicationEventPublisher publisher;
 
-    public CategoriaResource(CategoriaRepository categoriaRepository) {
+    public CategoriaResource(CategoriaRepository categoriaRepository, ApplicationEventPublisher publisher) {
         this.categoriaRepository = categoriaRepository;
+        this.publisher = publisher;
     }
 
     @GetMapping
@@ -30,11 +35,9 @@ public class CategoriaResource {
     public ResponseEntity<Categoria> criar(@Valid @RequestBody Categoria categoria, HttpServletResponse response) {
         Categoria categoriaSalva = categoriaRepository.save(categoria);
 
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{codigo}")
-                .buildAndExpand(categoriaSalva.getCodigo()).toUri();
-        response.setHeader("Location", uri.toASCIIString());
+        publisher.publishEvent(new RecursoCriadoEvent(this, response, categoria.getCodigo()));
 
-        return ResponseEntity.created(uri).body(categoriaSalva);
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoriaSalva);
     }
 
     @GetMapping("/{codigo}/busca")
