@@ -1,8 +1,7 @@
 package com.algaworks.algamony.api.model;
 
+import com.algaworks.algamony.api.model.dto.PessoaDTO;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,10 +19,8 @@ public class Pessoa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "O [nome] é obrigatório")
     private String nome;
 
-    @NotNull(message = "O [ativo] é obrigatório")
     private Boolean ativo;
 
     @Embedded
@@ -39,5 +36,11 @@ public class Pessoa {
     @Override
     public int hashCode() {
         return Objects.hashCode(getId());
+    }
+
+    public void atualizar(PessoaDTO dto) {
+        this.nome = dto.nome();
+        this.ativo = dto.ativo();
+        this.endereco = dto.endereco();
     }
 }

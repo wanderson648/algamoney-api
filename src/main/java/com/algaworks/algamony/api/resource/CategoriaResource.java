@@ -1,12 +1,9 @@
 package com.algaworks.algamony.api.resource;
 
-import com.algaworks.algamony.api.event.RecursoCriadoEvent;
-import com.algaworks.algamony.api.exception.RecursoNaoEncontrado;
 import com.algaworks.algamony.api.model.Categoria;
-import com.algaworks.algamony.api.repository.CategoriaRepository;
+import com.algaworks.algamony.api.service.CategoriaService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,32 +14,25 @@ import java.util.List;
 @RequestMapping("v1/categorias")
 public class CategoriaResource {
 
-    private final CategoriaRepository categoriaRepository;
-    private final ApplicationEventPublisher publisher;
+    private final CategoriaService categoriaService;
 
-    public CategoriaResource(CategoriaRepository categoriaRepository, ApplicationEventPublisher publisher) {
-        this.categoriaRepository = categoriaRepository;
-        this.publisher = publisher;
+    public CategoriaResource(CategoriaService categoriaService) {
+        this.categoriaService = categoriaService;
     }
 
     @GetMapping
     public ResponseEntity<List<Categoria>> listar() {
-        return ResponseEntity.ok(categoriaRepository.findAll());
+        return ResponseEntity.ok(categoriaService.listar());
     }
 
     @PostMapping("/cria")
     public ResponseEntity<Categoria> criar(@Valid @RequestBody Categoria categoria, HttpServletResponse response) {
-        Categoria categoriaSalva = categoriaRepository.save(categoria);
-
-        publisher.publishEvent(new RecursoCriadoEvent(this, response, categoria.getCodigo()));
-
+        Categoria categoriaSalva = categoriaService.salvar(categoria, response);
         return ResponseEntity.status(HttpStatus.CREATED).body(categoriaSalva);
     }
 
     @GetMapping("/{codigo}/busca")
     public ResponseEntity<Categoria> buscarPeloCodigo(@PathVariable Long codigo) {
-        return categoriaRepository.findById(codigo)
-                .map(c -> ResponseEntity.ok(new Categoria(c.getCodigo(), c.getNome())))
-                .orElseThrow(() -> new RecursoNaoEncontrado("Recurso não encontrado"));
+        return ResponseEntity.ok(categoriaService.buscarPeloCodigo(codigo));
     }
 }
