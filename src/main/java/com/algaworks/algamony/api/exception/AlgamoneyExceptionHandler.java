@@ -1,5 +1,6 @@
 package com.algaworks.algamony.api.exception;
 
+import com.algaworks.algamony.api.exception.dto.ApiErrorResponse;
 import com.algaworks.algamony.api.exception.dto.ErrorDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -13,9 +14,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,5 +59,19 @@ public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler {
             errors.add(new ErrorDTO(msgUser, msgDev));
         }
         return errors;
+    }
+
+    @ExceptionHandler(RecursoNaoEncontrado.class)
+    public ResponseEntity<ApiErrorResponse> recursoNaoEncontrado(RecursoNaoEncontrado ex) {
+
+
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
+                "problem/resource-not-found",
+                ex.getMessage(),
+                Instant.now()
+        );
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiErrorResponse);
     }
 }

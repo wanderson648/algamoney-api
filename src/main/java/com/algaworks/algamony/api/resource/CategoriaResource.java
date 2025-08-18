@@ -1,6 +1,7 @@
 package com.algaworks.algamony.api.resource;
 
 import com.algaworks.algamony.api.event.RecursoCriadoEvent;
+import com.algaworks.algamony.api.exception.RecursoNaoEncontrado;
 import com.algaworks.algamony.api.model.Categoria;
 import com.algaworks.algamony.api.repository.CategoriaRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -9,9 +10,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -44,6 +43,6 @@ public class CategoriaResource {
     public ResponseEntity<Categoria> buscarPeloCodigo(@PathVariable Long codigo) {
         return categoriaRepository.findById(codigo)
                 .map(c -> ResponseEntity.ok(new Categoria(c.getCodigo(), c.getNome())))
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new RecursoNaoEncontrado("Recurso não encontrado"));
     }
 }

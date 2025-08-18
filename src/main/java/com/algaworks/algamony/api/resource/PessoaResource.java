@@ -1,6 +1,7 @@
 package com.algaworks.algamony.api.resource;
 
 import com.algaworks.algamony.api.event.RecursoCriadoEvent;
+import com.algaworks.algamony.api.exception.RecursoNaoEncontrado;
 import com.algaworks.algamony.api.model.Pessoa;
 import com.algaworks.algamony.api.repository.PessoaRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -9,9 +10,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -39,5 +38,17 @@ public class PessoaResource {
     @GetMapping
     public ResponseEntity<List<Pessoa>> listar() {
         return ResponseEntity.ok(pessoaRepository.findAll());
+    }
+
+
+    @DeleteMapping("/{id}/remove")
+    public ResponseEntity<Void> remover(@PathVariable Long id) {
+        pessoaRepository.findById(id).ifPresentOrElse(
+                pessoaRepository::delete,
+                () -> {
+                    throw new RecursoNaoEncontrado("Recurso não encontrado");
+                });
+
+        return ResponseEntity.noContent().build();
     }
 }
