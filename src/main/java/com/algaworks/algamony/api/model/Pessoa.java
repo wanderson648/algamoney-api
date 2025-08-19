@@ -43,4 +43,8 @@ public class Pessoa {
         this.ativo = dto.ativo();
         this.endereco = dto.endereco();
     }
+
+    public void atualizarParcial(Boolean ativo) {
+        this.ativo = ativo;
+    }
 }

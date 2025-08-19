@@ -54,4 +54,13 @@ public class PessoaService {
                     throw new RecursoNaoEncontrado("Recurso não encontrado");
                 });
     }
+
+    @Transactional
+    public void atualizarPropriedadeAtivo(Long id, Boolean ativo) {
+        Pessoa pessoa = pessoaRepository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontrado("Recurso não encontrado"));
+
+        pessoa.atualizarParcial(ativo);
+        pessoaRepository.save(pessoa);
+    }
 }

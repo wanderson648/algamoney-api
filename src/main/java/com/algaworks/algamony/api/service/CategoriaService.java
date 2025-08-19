@@ -40,4 +40,6 @@ public class CategoriaService {
         return categoriaRepository.findById(codigo)
                 .orElseThrow(() -> new RecursoNaoEncontrado("Recurso não encontrado"));
     }
+
+
 }

@@ -45,4 +45,10 @@ public class PessoaResource {
         Pessoa pessoaSalva = pessoaService.atulizar(id, dto);
         return ResponseEntity.ok(pessoaSalva);
     }
+
+    @PatchMapping("/{id}/ativo")
+    public ResponseEntity<Void> atualizarPropriedadeAtivo(@PathVariable Long id, @RequestBody Boolean ativo) {
+        pessoaService.atualizarPropriedadeAtivo(id, ativo);
+        return ResponseEntity.noContent().build();
+    }
 }
