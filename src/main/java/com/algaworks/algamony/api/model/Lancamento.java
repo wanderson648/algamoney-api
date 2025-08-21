@@ -17,6 +17,10 @@ import java.time.LocalDate;
 @Table(name = "lancamento")
 public class Lancamento {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(nullable = false, length = 100)
     private String descricao;
 
