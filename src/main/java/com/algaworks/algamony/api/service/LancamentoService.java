@@ -3,7 +3,9 @@ package com.algaworks.algamony.api.service;
 import com.algaworks.algamony.api.event.RecursoCriadoEvent;
 import com.algaworks.algamony.api.exception.RecursoNaoEncontrado;
 import com.algaworks.algamony.api.model.Lancamento;
+import com.algaworks.algamony.api.model.dto.LancamentoDTO;
 import com.algaworks.algamony.api.repository.LancamentoRepository;
+import com.algaworks.algamony.api.repository.lancamentos.LancamentoSpecs;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -28,8 +30,8 @@ public class LancamentoService {
 
 
     @Transactional(readOnly = true)
-    public List<Lancamento> listar() {
-        return lancamentoRepository.findAll();
+    public List<Lancamento> listar(LancamentoDTO filtro) {
+        return lancamentoRepository.findAll(LancamentoSpecs.comFiltros(filtro));
     }
 
     @Transactional

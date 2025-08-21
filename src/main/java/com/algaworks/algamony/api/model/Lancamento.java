@@ -36,7 +36,7 @@ public class Lancamento {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
-    private TipoLancamento tipoLancamento;
+    private TipoLancamento tipo;
 
 
     @ManyToOne

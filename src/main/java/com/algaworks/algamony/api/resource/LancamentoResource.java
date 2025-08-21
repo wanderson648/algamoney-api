@@ -1,10 +1,12 @@
 package com.algaworks.algamony.api.resource;
 
 import com.algaworks.algamony.api.model.Lancamento;
+import com.algaworks.algamony.api.model.dto.LancamentoDTO;
 import com.algaworks.algamony.api.service.LancamentoService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +27,8 @@ public class LancamentoResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<Lancamento>> listar() {
-        return ResponseEntity.ok(lancamentoService.listar());
+    public ResponseEntity<List<Lancamento>> listar(@ModelAttribute LancamentoDTO filtro) {
+        return ResponseEntity.ok(lancamentoService.listar(filtro));
     }
 
     @GetMapping("/{id}/busca")
