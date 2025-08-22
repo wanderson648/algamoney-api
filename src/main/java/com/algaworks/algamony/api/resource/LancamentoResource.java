@@ -2,6 +2,7 @@ package com.algaworks.algamony.api.resource;
 
 import com.algaworks.algamony.api.model.Lancamento;
 import com.algaworks.algamony.api.model.dto.LancamentoDTO;
+import com.algaworks.algamony.api.model.dto.LancamentoRequestDTO;
 import com.algaworks.algamony.api.service.LancamentoService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -20,8 +21,8 @@ public class LancamentoResource {
     private final LancamentoService lancamentoService;
 
     @PostMapping("/cria")
-    public ResponseEntity<Lancamento> criar(@Valid @RequestBody Lancamento lancamento, HttpServletResponse response) {
-        Lancamento lancamentoNovo = lancamentoService.salvar(lancamento, response);
+    public ResponseEntity<Lancamento> criar(@Valid @RequestBody LancamentoRequestDTO lancamentoRequestDTO, HttpServletResponse response) {
+        Lancamento lancamentoNovo = lancamentoService.salvar(lancamentoRequestDTO, response);
         return ResponseEntity.status(HttpStatus.CREATED).body(lancamentoNovo);
     }
 

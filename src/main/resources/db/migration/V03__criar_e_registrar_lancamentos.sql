@@ -2,7 +2,7 @@ CREATE TABLE lancamento (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     descricao VARCHAR(100) NOT NULL,
     data_vencimento DATE NOT NULL,
-    data_pagamento DATE NOT NULL,               -- agora NOT NULL
+    data_pagamento DATE,               -- agora NOT NULL
     valor DECIMAL(10,2) NOT NULL,
     observacao VARCHAR(255),
     tipo VARCHAR(10) NOT NULL,                  -- RECEITA | DESPESA

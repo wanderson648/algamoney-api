@@ -1,10 +1,8 @@
 package com.algaworks.algamony.api.model;
 
+import com.algaworks.algamony.api.model.dto.LancamentoRequestDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -16,6 +14,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "lancamento")
+@Builder
 public class Lancamento {
 
     @Id
