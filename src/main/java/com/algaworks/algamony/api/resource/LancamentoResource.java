@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +28,8 @@ public class LancamentoResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<Lancamento>> listar(@ModelAttribute LancamentoDTO filtro) {
-        return ResponseEntity.ok(lancamentoService.listar(filtro));
+    public ResponseEntity<Page<Lancamento>> listar(@ModelAttribute LancamentoDTO filtro, Pageable pageable) {
+        return ResponseEntity.ok(lancamentoService.listar(filtro, pageable));
     }
 
     @GetMapping("/{id}/busca")

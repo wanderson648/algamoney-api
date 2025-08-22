@@ -19,6 +19,16 @@ public final class LancamentoSpecs {
                 preds.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("descricao")),
                         "%" + lancamentoDTO.descricao().toLowerCase() + "%"));
             }
+
+            if(lancamentoDTO.dataVencimentoDe() != null) {
+                preds.add(criteriaBuilder.greaterThanOrEqualTo(root.get("dataVencimento"), lancamentoDTO.dataVencimentoDe()));
+            }
+
+            if(lancamentoDTO.dataVencimentoAte() != null) {
+                preds.add(criteriaBuilder.lessThanOrEqualTo(root.get("dataVencimento"), lancamentoDTO.dataVencimentoAte()));
+            }
+
+
             return criteriaBuilder.and(preds.toArray(Predicate[]::new));
         };
     }

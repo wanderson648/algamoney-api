@@ -9,6 +9,8 @@ import com.algaworks.algamony.api.repository.lancamentos.LancamentoSpecs;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,8 +32,15 @@ public class LancamentoService {
 
 
     @Transactional(readOnly = true)
-    public List<Lancamento> listar(LancamentoDTO filtro) {
-        return lancamentoRepository.findAll(LancamentoSpecs.comFiltros(filtro));
+    public Page<Lancamento> listar(LancamentoDTO filtro, Pageable pageable) {
+
+        if(filtro.dataVencimentoDe() != null && filtro.dataVencimentoAte() != null
+                && filtro.dataVencimentoDe().isAfter(filtro.dataVencimentoAte())) {
+
+            throw new IllegalArgumentException("dataVencimentoDe não pode ser maio que dataVencimentoAte");
+        }
+
+        return lancamentoRepository.findAll(LancamentoSpecs.comFiltros(filtro), pageable);
     }
 
     @Transactional
