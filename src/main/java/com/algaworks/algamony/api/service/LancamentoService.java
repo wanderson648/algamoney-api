@@ -34,6 +34,10 @@ public class LancamentoService {
         Pessoa pessoa = pessoaRepository.findById(lancamentoRequestDTO.pessoaId())
                 .orElseThrow(() -> new RecursoNaoEncontrado("Pessoa não encontrada"));
 
+        if(!Boolean.TRUE.equals(pessoa.getAtivo())) {
+            throw new RecursoNaoEncontrado("Pessoa inativa");
+        }
+
         Categoria categoria = categoriaRepository.findById(lancamentoRequestDTO.categoriaId())
                 .orElseThrow(() -> new RecursoNaoEncontrado("Categoria não encontrada"));
 
