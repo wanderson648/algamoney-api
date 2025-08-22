@@ -36,4 +36,10 @@ public class LancamentoResource {
         return ResponseEntity.ok(lancamentoService.buscarPorId(id));
     }
 
+    @DeleteMapping("/{id}/remove")
+    public ResponseEntity<Void> remover(@PathVariable Long id) {
+        lancamentoService.remover(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

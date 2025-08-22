@@ -34,7 +34,7 @@ public class LancamentoService {
         Pessoa pessoa = pessoaRepository.findById(lancamentoRequestDTO.pessoaId())
                 .orElseThrow(() -> new RecursoNaoEncontrado("Pessoa não encontrada"));
 
-        if(!Boolean.TRUE.equals(pessoa.getAtivo())) {
+        if (!Boolean.TRUE.equals(pessoa.getAtivo())) {
             throw new RecursoNaoEncontrado("Pessoa inativa");
         }
 
@@ -64,6 +64,12 @@ public class LancamentoService {
     @Transactional
     public Lancamento buscarPorId(Long id) {
         return lancamentoRepository.findById(id)
-                .orElseThrow(() -> new RecursoNaoEncontrado("Recurso não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontrado("Lançamento não encontrado"));
+    }
+
+    @Transactional
+    public void remover(Long id) {
+        Lancamento lancamento = buscarPorId(id);
+        lancamentoRepository.delete(lancamento);
     }
 }
